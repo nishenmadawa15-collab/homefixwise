@@ -1,20 +1,59 @@
 ---
-import { getCollection, render } from 'astro:content';
-import Base from '../../layouts/Base.astro';
+import { getCollection, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
 
 export async function getStaticPaths() {
-  const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
-  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+  const posts = await getCollection("blog");
+
+  return posts.map((post) => ({
+    params: {
+      slug: post.id.replace(/\.(md|mdx)$/, "")
+    },
+    props: {
+      post
+    }
+  }));
 }
+
 const { post } = Astro.props;
+
 const { Content } = await render(post);
+
+const title = `${post.data.title} | HomeFixWise`;
+
+const description =
+  post.data.description ??
+  "Practical home repair troubleshooting and repair cost guidance for U.S. and Canadian homeowners.";
 ---
-<Base title={`${post.data.title} | HomeFixWise`} description={post.data.description}>
+
+<Base {title} {description}>
   <article class="article">
-    <span class="pill">{post.data.category}</span>
+
+    <p class="eyebrow">
+      {post.data.category ?? "Home Repair Guide"}
+    </p>
+
     <h1>{post.data.title}</h1>
-    <p class="lede">{post.data.description}</p>
-    <div class="notice"><strong>Safety:</strong> Stop and contact a qualified professional for gas, combustion, live electrical, structural, or other safety-critical work.</div>
+
+    {
+      post.data.description && (
+        <p class="lede">
+          {post.data.description}
+        </p>
+      )
+    }
+
+    <div class="notice">
+      <strong>Safety:</strong>
+      Stop and contact a qualified professional for gas, combustion,
+      live electrical, structural, or other safety-critical work.
+    </div>
+
     <Content />
+
+    <div class="ad-slot" aria-label="Advertisement placeholder">
+      Reserved ad slot — enable only after AdSense approval
+    </div>
+
   </article>
 </Base>
