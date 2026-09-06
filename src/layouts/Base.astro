@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 const { title, description } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 ---
@@ -14,19 +16,35 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
   <meta property="og:url" content={canonical} />
-  <link rel="stylesheet" href="/src/styles/global.css" />
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="/">HomeFixWise</a>
+
     <nav aria-label="Primary navigation">
-      <a href="/#hvac">HVAC</a><a href="/#plumbing">Plumbing</a><a href="/#basement">Basement</a><a href="/#cost">Cost Guides</a>
+      <a href="/#hvac">HVAC</a>
+      <a href="/#plumbing">Plumbing</a>
+      <a href="/#basement">Basement</a>
+      <a href="/#cost">Cost Guides</a>
     </nav>
   </header>
-  <main><slot /></main>
+
+  <main>
+    <slot />
+  </main>
+
   <footer>
-    <p>HomeFixWise provides educational home-repair information for U.S. and Canadian homeowners. Safety-critical work should be handled by a qualified professional.</p>
-    <p><a href="/about/">About</a> · <a href="/editorial-policy/">Editorial Policy</a> · <a href="/privacy/">Privacy</a></p>
+    <p>
+      HomeFixWise provides educational home-repair information for U.S. and
+      Canadian homeowners. Safety-critical work should be handled by a qualified
+      professional.
+    </p>
+
+    <p>
+      <a href="/about/">About</a> ·
+      <a href="/editorial-policy/">Editorial Policy</a> ·
+      <a href="/privacy/">Privacy</a>
+    </p>
   </footer>
 </body>
 </html>
